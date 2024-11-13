@@ -5,42 +5,54 @@
         <div class="row">
           <!-- Logo -->
           <div class="logo d-flex justify-content-center">
-            <img alt="Vue logo" src="./assets/logo.png">
+            <img alt="Vue logo" src="./assets/logo.png" id="logo-vue">
           </div>
           <!-- Title -->
-          <div class="title d-flex justify-content-center">
-            <h1 class="fw-bold">GALERIE PHOTOS</h1>
+          <div class="title d-flex justify-content-center align-items-center">
+            <div v-if="!isHomePage" 
+            @click="retourNavigation" 
+            class="btn btn-custom me-4">
+              Retour
+            </div>
+            <h1 class="fw-bold">Galerie photos</h1>
           </div>
         </div>
 
-        <!-- gallery -->
-        <div class="row gallery-bg pt-4 mt-5">
-          <!-- cards -->
-          <div v-for="el in listFish" :key="el.id" class="col-md-2 mb-4">
-            <div class="card">
-              <img :src="el.url" :alt="el.title" class="photo card-img-top ">
-              <div class="card-body">
-                <p class="card-title">{{ el.title }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Display GalleryComponent or FishComponent based on the route --> 
+        <router-view></router-view>
 
     </div>
   </div> <!-- /app -->
 </template>
 
-<script>
-  import photos from './assets/photos.json'; 
+<script> 
 
   export default {
     name: 'App',
     data() {
       return {
-        listFish: photos,
       } 
     },
+    computed: {
+        // check if it's the home page
+        isHomePage() {
+            return this.$route.path === '/';
+        }
+    },
+   methods: {
+        retourNavigation: function() {
+            this.$router.push('/')
+        }, 
 
+        checkIfHome: function() {
+          let url = ""
+          if (url === "http://localhost:8080/") { 
+            return true
+          } else {
+            return false
+          }
+        }
+    }, 
   }
 
 </script>
@@ -65,21 +77,11 @@
     margin: 0;
   }
 
-  .gallery-bg {
-    background-color: #004e64;
+  #logo-vue {
+    width: 5rem;
   }
 
- .photo {
-  width: 100vh;
-  height: 10vw;
-  object-fit: cover;
- }
-
- @media (max-width: 768px) {
-  .photo {
-    width: 100%; 
-    height: auto;  
+  .btn-custom {
+    background-color: #7AE582!important;
   }
-}
-
 </style>
